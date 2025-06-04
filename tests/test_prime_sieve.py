@@ -13,5 +13,17 @@ class PrimeSieveTests(unittest.TestCase):
         count = sum(1 for _ in segmented_sieve(1_000_000))
         self.assertEqual(count, 78498)
 
+    def test_cli_million_runs(self):
+        """Ensure the CLI works without the --count flag for one million."""
+        import subprocess, sys
+        result = subprocess.run(
+            [sys.executable, "prime_sieve.py", "1000000"],
+            stdout=subprocess.PIPE,
+            check=True,
+            text=True,
+        )
+        # ensure output ends with the last prime below one million
+        self.assertTrue(result.stdout.strip().endswith("999983"))
+
 if __name__ == '__main__':
     unittest.main()
